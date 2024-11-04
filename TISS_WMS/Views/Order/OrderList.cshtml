@@ -1,0 +1,44 @@
+﻿@model TISS_WMS.Models.Orders
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>訂單詳情 - @Model.OrderId</h2>
+
+    <div>
+        <p><strong>訂購人：</strong>@Model.Users.UserAccount</p>
+        <p><strong>訂購日期：</strong>@Model.OrderDate.ToString("yyyy-MM-dd")</p>
+        <p><strong>訂單狀態：</strong>@Model.OrderStatus</p>
+        <p><strong>總金額：</strong>@Model.TotalAmount.ToString("C")</p>
+    </div>
+
+    <h4>訂單項目</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>產品名稱</th>
+                <th>數量</th>
+                <th>單價</th>
+                <th>小計</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.Products.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@(item.Quantity * item.Price).ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TISS_WMS.Models.UserViewModel>
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>使用者管理</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>帳號</th>
+                <th>Email</th>
+                <th>角色</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserAccount</td>
+                    <td>@user.Email</td>
+                    <td>@string.Join(", ", user.AssignedRoles)</td>
+                    <td>
+                        <form method="post" action="@Url.Action("UpdateRoles", "Admin")">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="userId" value="@user.UserID" />
+                            @Html.ListBox("roleIds", ViewBag.Roles as List<SelectListItem>, new { @class = "form-control" })
+                            <button type="submit" class="btn btn-primary btn-sm mt-2">更新角色</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

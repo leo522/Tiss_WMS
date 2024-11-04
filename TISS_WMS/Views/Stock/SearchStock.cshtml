@@ -1,0 +1,50 @@
+﻿@model IEnumerable<TISS_WMS.Models.StockViewModel>
+@{
+    ViewBag.Title = "SearchStock";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+</head>
+<body>
+    <h2>查詢庫存</h2>
+
+    <form id="searchForm" method="get" action="@Url.Action("SearchStock", "Stock")">
+        <div class="form-group">
+            <label for="keyword">關鍵字</label>
+            <input type="text" id="keyword" name="keyword" class="form-control" placeholder="輸入產品名稱或條碼">
+        </div>
+
+        <button type="submit" class="btn btn-primary">查詢</button>
+    </form>
+
+    <hr />
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>產品編號</th>
+                <th>產品名稱</th>
+                <th>倉庫名稱</th>
+                <th>當前庫存</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stock in Model)
+            {
+                <tr>
+                    <td>@stock.ProductId</td>
+                    <td>@stock.ProductName</td>
+                    <td>@stock.WarehouseName</td>
+                    <td>@stock.CurrentStock</td>
+                    <td>
+                        <a href="@Url.Action("EditStock", "Stock", new { id = stock.ProductId })" class="btn btn-primary">編輯</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

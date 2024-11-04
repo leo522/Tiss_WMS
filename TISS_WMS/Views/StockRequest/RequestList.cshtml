@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TISS_WMS.Models.StockRequests>
+@{
+    ViewBag.Title = "RequestList";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>庫存申請列表</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>產品名稱</th>
+                <th>倉庫</th>
+                <th>數量</th>
+                <th>申請類型</th>
+                <th>狀態</th>
+                <th>申請人</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var request in Model)
+            {
+                <tr>
+                    <td>@request.Products.ProductName</td>
+                    <td>@request.Warehouses.WarehouseName</td>
+                    <td>@request.Quantity</td>
+                    <td>@request.RequestType</td>
+                    <td>@request.Status</td>
+                    <td>@request.RequestedBy</td>
+                    <td>
+                        @if (request.Status == "Pending")
+                        {
+                            <a href="@Url.Action("ApproveRequest", "StockRequest", new { id = request.StockRequestId })" class="btn btn-success">批准</a>
+                            <a href="@Url.Action("RejectRequest", "StockRequest", new { id = request.StockRequestId })" class="btn btn-danger">拒絕</a>
+                        }
+                        @if (request.Status == "Approved")
+                        {
+                            <a href="@Url.Action("ConfirmRequest", "StockRequest", new { id = request.StockRequestId })" class="btn btn-primary">確認完成</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

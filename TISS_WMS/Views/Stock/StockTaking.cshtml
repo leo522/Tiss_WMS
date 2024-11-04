@@ -1,0 +1,96 @@
+﻿@model IEnumerable<TISS_WMS.Models.StockViewModel>
+@{
+    ViewBag.Title = "StockTaking";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>庫存盤點</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>庫存盤點</h2>
+
+    <!-- 條碼掃描區 -->
+    <div class="barcode-scan-section" style="margin-bottom: 20px;">
+        <label for="barcodeInput">請掃描條碼或 QR 碼:</label>
+        <input type="text" id="barcodeInput" class="form-control" placeholder="條碼/QR碼">
+        <button id="scanButton" type="button" class="btn btn-primary" style="margin-top: 10px;">掃描</button>
+    </div>
+
+    <!-- 顯示產品資訊 -->
+    <div id="productInfo" style="display:none; margin-top:20px;">
+        <h4>產品資訊</h4>
+        <p>產品名稱: <span id="productName"></span></p>
+        <p>倉庫名稱: <span id="warehouseName"></span></p>
+        <p>當前庫存: <span id="currentStock"></span></p>
+    </div>
+
+    <form id="stockTakingForm" method="post" action="@Url.Action("StockTaking", "Stock")">
+        @Html.AntiForgeryToken()
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>產品名稱</th>
+                    <th>倉庫名稱</th>
+                    <th>當前庫存</th>
+                    <th>新庫存</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var stock in Model)
+                {
+                    <tr>
+                        <td>@stock.ProductName</td>
+                        <td>@stock.WarehouseName</td>
+                        <td>@stock.CurrentStock</td>
+                        <td>
+                            <input type="number" name="NewStock[@stock.ProductId]" class="form-control" value="@stock.CurrentStock">
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary">保存庫存變更</button>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $('#scanButton').click(function () {
+                var code = $('#barcodeInput').val().trim();
+
+                if (code) {
+                    $.ajax({
+                        url: '@Url.Action("GetProductByBarcodeOrQRCode", "Products")',
+                        type: 'GET',
+                        data: { code: code },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#productInfo').show();
+                                $('#productName').text(response.data.ProductName);
+                                $('#warehouseName').text(response.data.WarehouseName || '無');
+                                $('#currentStock').text(response.data.StockQuantity || '無');
+                            } else {
+                                alert(response.message);
+                                $('#productInfo').hide();
+                            }
+                        },
+                        error: function () {
+                            alert("查詢產品資訊時發生錯誤");
+                            $('#productInfo').hide();
+                        }
+                    });
+                } else {
+                    alert("請先輸入條碼或 QR 碼");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

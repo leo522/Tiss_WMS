@@ -1,0 +1,23 @@
+﻿@model TISS_WMS.Models.Units
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>編輯單位</h2>
+    <form asp-action="EditUnit" method="post">
+        <input type="hidden" name="UnitId" value="@Model.UnitID" />
+        <div class="form-group">
+            <label for="UnitName">單位名稱</label>
+            <input type="text" name="UnitName" class="form-control" value="@Model.UnitName" required />
+        </div>
+        <button type="submit" class="btn btn-success">保存變更</button>
+        <a href="@Url.Action("UnitList", "Unit")" class="btn btn-secondary">返回</a>
+    </form>
+</body>
+</html>

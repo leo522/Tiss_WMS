@@ -1,0 +1,44 @@
+﻿@model IEnumerable<TISS_WMS.Models.StockViewModel>
+@{
+    ViewBag.Title = "歷史庫存結果";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>指定日期庫存狀況</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>產品編號</th>
+                <th>產品名稱</th>
+                <th>條碼</th>
+                <th>倉庫名稱</th>
+                <th>當前庫存</th>
+                <th>庫存變化</th>
+                <th>交易類型</th>
+                <th>變動日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stock in Model)
+            {
+                <tr>
+                    <td>@stock.ProductId</td>
+                    <td>@stock.ProductName</td>
+                    <td>@stock.Barcode</td>
+                    <td>@stock.WarehouseName</td>
+                    <td>@stock.CurrentStock</td>
+                    <td>@stock.StockChange</td>
+                    <td>@stock.TransactionType</td>
+                    <td>@stock.CreatedAt.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>沒有找到該日期的庫存記錄。</p>
+}

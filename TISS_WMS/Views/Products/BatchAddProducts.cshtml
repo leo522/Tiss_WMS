@@ -1,0 +1,64 @@
+﻿@model List<TISS_WMS.Models.Products>
+@{
+    ViewBag.Title = "批量新增產品";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>批量新增產品</h2>
+
+    <form id="batchAddProductsForm" method="post" action="@Url.Action("BatchAddProducts", "Products")">
+        @Html.AntiForgeryToken()
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>產品名稱</th>
+                    <th>產品描述</th>
+                    <th>條碼</th>
+                    <th>單位</th>
+                    <th>數量</th>
+                    <th>單價</th>
+                    <th>備註</th>
+                </tr>
+            </thead>
+            <tbody id="productRows">
+                <tr>
+                    <td><input type="text" name="products[0].ProductName" required /></td>
+                    <td><input type="text" name="products[0].ProductDescription" /></td>
+                    <td><input type="text" name="products[0].Barcode" required /></td>
+                    <td><input type="text" name="products[0].Unit" required /></td>
+                    <td><input type="number" name="products[0].StockQuantity" required /></td>
+                    <td><input type="number" name="products[0].Price" required /></td>
+                    <td><input type="text" name="products[0].Remark" /></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button type="button" onclick="addRow()">新增一行</button>
+        <button type="submit" class="btn btn-primary">批量新增產品</button>
+    </form>
+
+    <script>
+let rowIndex = 1;
+    function addRow() {
+        const newRow = `
+            <tr>
+                <td><input type="text" name="products[${rowIndex}].ProductName" required /></td>
+                <td><input type="text" name="products[${rowIndex}].ProductDescription" /></td>
+                <td><input type="text" name="products[${rowIndex}].Barcode" required /></td>
+                <td><input type="text" name="products[${rowIndex}].Unit" required /></td>
+                <td><input type="number" name="products[${rowIndex}].StockQuantity" required /></td>
+                <td><input type="number" name="products[${rowIndex}].Price" required /></td>
+                <td><input type="text" name="products[${rowIndex}].Remark" /></td>
+            </tr>`;
+        $('#productRows').append(newRow);
+        rowIndex++;
+    }</script>
+</body>
+</html>

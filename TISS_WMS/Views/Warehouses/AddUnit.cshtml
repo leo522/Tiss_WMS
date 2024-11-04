@@ -1,0 +1,22 @@
+﻿@model TISS_WMS.Models.Units
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>新增單位</h2>
+    <form action="@Url.Action("AddUnit", "Settings")" method="post">
+        <div class="form-group">
+            <label for="UnitName">單位名稱</label>
+            <input type="text" name="UnitName" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success">保存</button>
+        <a href="@Url.Action("UnitList", "Settings")" class="btn btn-primary">返回</a>
+    </form>
+</body>
+</html>

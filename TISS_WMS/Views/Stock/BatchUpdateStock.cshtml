@@ -1,0 +1,49 @@
+﻿@model List<TISS_WMS.Models.StockViewModel>
+@{
+    ViewBag.Title = "批量更新庫存";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>批量更新庫存</h2>
+
+    <form id="batchUpdateStockForm" method="post" action="@Url.Action("BatchUpdateStock", "Stock")">
+        @Html.AntiForgeryToken()
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>產品名稱</th>
+                    <th>條碼</th>
+                    <th>倉庫名稱</th>
+                    <th>當前庫存</th>
+                    <th>更新庫存變化</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>@Model[i].ProductName</td>
+                        <td>@Model[i].Barcode</td>
+                        <td>@Model[i].WarehouseName</td>
+                        <td>@Model[i].CurrentStock</td>
+                        <td>
+                            <input type="number" name="stockUpdates[@i].StockChange" class="form-control" />
+                            <input type="hidden" name="stockUpdates[@i].ProductId" value="@Model[i].ProductId" />
+                            <input type="hidden" name="stockUpdates[@i].WarehouseId" value="@Model[i].WarehouseId" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary">批量更新庫存</button>
+    </form>
+</body>
+</html>

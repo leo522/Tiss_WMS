@@ -1,0 +1,61 @@
+﻿@model TISS_WMS.Models.OrderViewModel
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>新增訂單</h2>
+    <form asp-action="CreateOrder" method="post">
+        <div class="form-group">
+            <label for="UserId">訂購人</label>
+            <select id="UserId" name="UserId" class="form-control">
+                @foreach (var user in ViewBag.Users)
+                {
+                    <option value="@user.UserID">@user.UserAccount</option>
+                }
+            </select>
+        </div>
+
+        <div id="orderItems">
+            <h4>產品選擇</h4>
+            <button type="button" id="addProduct" class="btn btn-secondary mb-2">新增產品</button>
+            <div class="order-item">
+                <select name="OrderItems[0].ProductId" class="form-control product-select">
+                    @foreach (var product in ViewBag.Products)
+                    {
+                        <option value="@product.ProductId">@product.ProductName</option>
+                    }
+                </select>
+                <input type="number" name="OrderItems[0].Quantity" class="form-control" placeholder="數量" />
+                <input type="number" name="OrderItems[0].Price" class="form-control" placeholder="單價" />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">提交訂單</button>
+    </form>
+
+<script>
+        document.getElementById("addProduct").addEventListener("click", function () {
+            const orderItems = document.getElementById("orderItems");
+            const newIndex = orderItems.children.length - 1;
+            const newItemHtml = `
+                <div class="order-item">
+                    <select name="OrderItems[${newIndex}].ProductId" class="form-control product-select">
+                        @foreach (var product in ViewBag.Products)
+                        {
+                            <option value="@product.ProductId">@product.ProductName</option>
+                        }
+                    </select>
+                    <input type="number" name="OrderItems[${newIndex}].Quantity" class="form-control" placeholder="數量" />
+                    <input type="number" name="OrderItems[${newIndex}].Price" class="form-control" placeholder="單價" />
+                </div>`;
+            orderItems.insertAdjacentHTML("beforeend", newItemHtml);
+        });
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿@model TISS_WMS.Models.ProductStock
+@{
+    ViewBag.Title = "EditStock";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+</head>
+<body>
+    <h2>編輯庫存</h2>
+
+    <form id="editStockForm" method="post" action="@Url.Action("EditStock", "Stock")">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label for="ProductId">產品</label>
+            @Html.DropDownList("ProductId", (SelectList)ViewBag.Products, "選擇產品", new { @class = "form-control", disabled = "disabled" })
+        </div>
+
+        <div class="form-group">
+            <label for="WarehouseId">倉庫</label>
+            @Html.DropDownList("WarehouseId", (SelectList)ViewBag.Warehouses, "選擇倉庫", new { @class = "form-control", disabled = "disabled" })
+        </div>
+
+        <div class="form-group">
+            <label for="StockChange">庫存變動</label>
+            <input type="number" id="StockChange" name="StockChange" class="form-control" value="@Model.StockChange" required>
+        </div>
+
+        <div class="form-group">
+            <label for="TransactionType">交易類型</label>
+            <input type="text" id="TransactionType" name="TransactionType" class="form-control" value="@Model.TransactionType" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">保存變更</button>
+        <a href="@Url.Action("StockList", "Stock")" class="btn btn-secondary">返回</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,95 @@
+﻿@model IEnumerable<TISS_WMS.Models.StockViewModel>
+@{
+    ViewBag.Title = "StockList";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="actions">
+    <a href="@Url.Action("AddStock", "Stock")" class="btn btn-success">新增庫存</a>
+    <a href="@Url.Action("StockTaking", "Stock")" class="btn btn-warning">庫存盤點</a>
+    <a href="@Url.Action("SearchStock", "Stock")" class="btn btn-info">查詢庫存</a>
+    <a href="@Url.Action("BatchUpdateStock", "Stock")" class="btn btn-info">批量更新庫存</a>
+</div>
+<div class="export-options">
+    <a href="@Url.Action("ExportStockReport", "Stock", new { format = "csv" })" class="btn btn-secondary">導出 CSV</a>
+    <a href="@Url.Action("ExportStockReport", "Stock", new { format = "excel" })" class="btn btn-secondary">導出 Excel</a>
+</div>
+<div class="export-options">
+    <a href="@Url.Action("ExportInOutReport", "Stock", new { format = "csv" })" class="btn btn-secondary">導出進出貨 CSV</a>
+    <a href="@Url.Action("ExportInOutReport", "Stock", new { format = "excel" })" class="btn btn-secondary">導出進出貨 Excel</a>
+</div>
+<div class="export-options">
+    <a href="@Url.Action("ExportStockTakingReport", "Stock", new { format = "csv" })" class="btn btn-secondary">導出盤點 CSV</a>
+    <a href="@Url.Action("ExportStockTakingReport", "Stock", new { format = "excel" })" class="btn btn-secondary">導出盤點 Excel</a>
+</div>
+
+<table id="stockTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>產品編號</th>
+            <th>產品名稱</th>
+            <th>條碼</th>
+            <th>倉庫名稱</th>
+            <th>當前庫存</th>
+            <th>庫存變化</th>
+            <th>交易類型</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stock in Model)
+        {
+            <tr>
+                <td>@stock.ProductId</td>
+                <td>@stock.ProductName</td>
+                <td>@stock.Barcode</td>
+                <td>@stock.WarehouseName</td>
+                <td>@stock.CurrentStock</td>
+                <td>@stock.StockChange</td>
+                <td>@stock.TransactionType</td>
+                <td>
+                    <a href="@Url.Action("EditStock", "Stock", new { id = stock.ProductId })" class="btn btn-primary">編輯</a>
+                    <button class="btn btn-danger btn-delete" data-id="@stock.ProductId">刪除</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#stockTable').DataTable({
+            "paging": true,      // 啟用分頁
+            "pageLength": 10,    // 每頁顯示 10 筆
+            "lengthChange": false, // 禁止更改每頁顯示筆數
+            "language": {
+                "paginate": {
+                    "first": "首頁",
+                    "last": "末頁",
+                    "next": "下一頁",
+                    "previous": "上一頁"
+                },
+                "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "infoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                "zeroRecords": "沒有匹配結果"
+            }
+        });
+
+        $('.btn-delete').click(function () {
+            var stockId = $(this).data('id');
+            if (confirm('確定要刪除這個庫存嗎？')) {
+                $.ajax({
+                    url: '@Url.Action("DeleteStock", "Stock")',
+                    type: 'POST',
+                    data: { id: stockId, __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() },
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

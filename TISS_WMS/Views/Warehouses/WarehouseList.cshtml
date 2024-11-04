@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TISS_WMS.Models.Warehouses>
+@{
+    ViewBag.Title = "WarehouseList";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>倉庫列表</h2>
+    <a href="@Url.Action("AddWarehouse", "Settings")" class="btn btn-primary">新增倉庫</a>
+
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>倉庫名稱</th>
+                <th>倉庫位置</th>
+                <th>建立日期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var warehouse in Model)
+            {
+                <tr>
+                    <td>@warehouse.WarehouseName</td>
+                    <td>@warehouse.WarehouseLocation</td>
+                    <td>@warehouse.CreatedAt.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a href="@Url.Action("EditWarehouse", "Settings", new { id = warehouse.WarehouseId })" class="btn btn-warning btn-sm">編輯</a>
+                        <form action="@Url.Action("DeleteWarehouse", "Settings")" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@warehouse.WarehouseId" />
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('確定刪除此倉庫嗎？');">刪除</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

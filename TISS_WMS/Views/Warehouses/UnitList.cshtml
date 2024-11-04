@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TISS_WMS.Models.Units>
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>單位管理</h2>
+    <a href="@Url.Action("AddUnit", "Settings")" class="btn btn-primary mb-3">新增單位</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>單位名稱</th>
+                <th>建立日期</th>
+                <th>更新日期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var unit in Model)
+            {
+                <tr>
+                    <td>@unit.UnitName</td>
+                    <td>@unit.CreatedAt.ToString("yyyy-MM-dd")</td>
+                    <td>@unit.UpdatedAt?.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a href="@Url.Action("EditUnit", "Settings", new { id = unit.UnitID })" class="btn btn-warning btn-sm">編輯</a>
+                        <form action="@Url.Action("DeleteUnit", "Settings")" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@unit.UnitID" />
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('確定要刪除此單位嗎？');">刪除</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

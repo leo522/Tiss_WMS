@@ -1,0 +1,1151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TISS_WMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BarcodeScans">
+          <Key>
+            <PropertyRef Name="BarcodeScanId" />
+          </Key>
+          <Property Name="BarcodeScanId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Barcode" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ScanType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ScanDate" Type="datetime" Nullable="false" />
+          <Property Name="ScannedByUserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Logs">
+          <Key>
+            <PropertyRef Name="LogId" />
+          </Key>
+          <Property Name="LogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="UserAction" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Details" Type="nvarchar" MaxLength="100" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="IPAddress" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="OrderItems">
+          <Key>
+            <PropertyRef Name="OrderItemId" />
+          </Key>
+          <Property Name="OrderItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" Nullable="false" />
+          <Property Name="OrderStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OutboundOrders">
+          <Key>
+            <PropertyRef Name="OutboundOrderId" />
+          </Key>
+          <Property Name="OutboundOrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="WarehouseId" Type="int" Nullable="false" />
+          <Property Name="ShippedDate" Type="datetime" Nullable="false" />
+          <Property Name="ShippedByUserId" Type="int" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ProductDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="Barcode" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="StockQuantity" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExpiryDate" Type="datetime" />
+          <Property Name="MinStockLevel" Type="int" />
+        </EntityType>
+        <EntityType Name="ProductStock">
+          <Key>
+            <PropertyRef Name="ProductStockId" />
+          </Key>
+          <Property Name="ProductStockId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="WarehouseId" Type="int" Nullable="false" />
+          <Property Name="StockChange" Type="int" Nullable="false" />
+          <Property Name="CurrentStock" Type="int" Nullable="false" />
+          <Property Name="TransactionType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="ReorderLevel" Type="int" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="StockRequests">
+          <Key>
+            <PropertyRef Name="StockRequestId" />
+          </Key>
+          <Property Name="StockRequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="WarehouseId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="RequestType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="RequestedBy" Type="int" Nullable="false" />
+          <Property Name="ApprovedBy" Type="int" />
+          <Property Name="RequestDate" Type="datetime" Nullable="false" />
+          <Property Name="ApprovalDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Units">
+          <Key>
+            <PropertyRef Name="UnitID" />
+          </Key>
+          <Property Name="UnitID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UnitName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="UserRoleID" />
+          </Key>
+          <Property Name="UserRoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserAccount" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="20" />
+          <Property Name="LastLogin" Type="datetime" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="Role" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Warehouses">
+          <Key>
+            <PropertyRef Name="WarehouseId" />
+          </Key>
+          <Property Name="WarehouseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WarehouseName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="WarehouseLocation" Type="nvarchar" MaxLength="20" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+警告 6035: 關聯性 'FK__BarcodeSc__Barco__6754599E' 在主要端上，有不屬於資料表索引鍵的資料行。已排除此關聯性。
+        <Association Name="FK__BarcodeSc__Barco__6754599E" />-->
+        <Association Name="FK__BarcodeSc__Scann__68487DD7">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="BarcodeScans" Type="Self.BarcodeScans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="BarcodeScans">
+              <PropertyRef Name="ScannedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Logs__UserId__6383C8BA">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Logs" Type="Self.Logs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Logs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Order__571DF1D5">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Produ__5812160E">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__UserId__412EB0B6">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OutboundO__Order__5DCAEF64">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OutboundOrders" Type="Self.OutboundOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OutboundOrders">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OutboundO__Shipp__5FB337D6">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="OutboundOrders" Type="Self.OutboundOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OutboundOrders">
+              <PropertyRef Name="ShippedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OutboundO__Wareh__5EBF139D">
+          <End Role="Warehouses" Type="Self.Warehouses" Multiplicity="1" />
+          <End Role="OutboundOrders" Type="Self.OutboundOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warehouses">
+              <PropertyRef Name="WarehouseId" />
+            </Principal>
+            <Dependent Role="OutboundOrders">
+              <PropertyRef Name="WarehouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductSt__Produ__52593CB8">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductStock" Type="Self.ProductStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductStock">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductSt__Wareh__534D60F1">
+          <End Role="Warehouses" Type="Self.Warehouses" Multiplicity="1" />
+          <End Role="ProductStock" Type="Self.ProductStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warehouses">
+              <PropertyRef Name="WarehouseId" />
+            </Principal>
+            <Dependent Role="ProductStock">
+              <PropertyRef Name="WarehouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockRequ__Appro__7B5B524B">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="StockRequests" Type="Self.StockRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StockRequests">
+              <PropertyRef Name="ApprovedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockRequ__Produ__787EE5A0">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="StockRequests" Type="Self.StockRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="StockRequests">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockRequ__Reque__7A672E12">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="StockRequests" Type="Self.StockRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StockRequests">
+              <PropertyRef Name="RequestedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockRequ__Wareh__797309D9">
+          <End Role="Warehouses" Type="Self.Warehouses" Multiplicity="1" />
+          <End Role="StockRequests" Type="Self.StockRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warehouses">
+              <PropertyRef Name="WarehouseId" />
+            </Principal>
+            <Dependent Role="StockRequests">
+              <PropertyRef Name="WarehouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRoles__RoleI__7F2BE32F">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRoles__UserI__7E37BEF6">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TISS_WMSModelStoreContainer">
+          <EntitySet Name="BarcodeScans" EntityType="Self.BarcodeScans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logs" EntityType="Self.Logs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderItems" EntityType="Self.OrderItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OutboundOrders" EntityType="Self.OutboundOrders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductStock" EntityType="Self.ProductStock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StockRequests" EntityType="Self.StockRequests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Units" EntityType="Self.Units" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Warehouses" EntityType="Self.Warehouses" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BarcodeSc__Scann__68487DD7" Association="Self.FK__BarcodeSc__Scann__68487DD7">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="BarcodeScans" EntitySet="BarcodeScans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Logs__UserId__6383C8BA" Association="Self.FK__Logs__UserId__6383C8BA">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Logs" EntitySet="Logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Order__571DF1D5" Association="Self.FK__OrderItem__Order__571DF1D5">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Produ__5812160E" Association="Self.FK__OrderItem__Produ__5812160E">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__UserId__412EB0B6" Association="Self.FK__Orders__UserId__412EB0B6">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OutboundO__Order__5DCAEF64" Association="Self.FK__OutboundO__Order__5DCAEF64">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OutboundOrders" EntitySet="OutboundOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OutboundO__Shipp__5FB337D6" Association="Self.FK__OutboundO__Shipp__5FB337D6">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="OutboundOrders" EntitySet="OutboundOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OutboundO__Wareh__5EBF139D" Association="Self.FK__OutboundO__Wareh__5EBF139D">
+            <End Role="Warehouses" EntitySet="Warehouses" />
+            <End Role="OutboundOrders" EntitySet="OutboundOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductSt__Produ__52593CB8" Association="Self.FK__ProductSt__Produ__52593CB8">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductStock" EntitySet="ProductStock" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductSt__Wareh__534D60F1" Association="Self.FK__ProductSt__Wareh__534D60F1">
+            <End Role="Warehouses" EntitySet="Warehouses" />
+            <End Role="ProductStock" EntitySet="ProductStock" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockRequ__Appro__7B5B524B" Association="Self.FK__StockRequ__Appro__7B5B524B">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StockRequests" EntitySet="StockRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockRequ__Produ__787EE5A0" Association="Self.FK__StockRequ__Produ__787EE5A0">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="StockRequests" EntitySet="StockRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockRequ__Reque__7A672E12" Association="Self.FK__StockRequ__Reque__7A672E12">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StockRequests" EntitySet="StockRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockRequ__Wareh__797309D9" Association="Self.FK__StockRequ__Wareh__797309D9">
+            <End Role="Warehouses" EntitySet="Warehouses" />
+            <End Role="StockRequests" EntitySet="StockRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRoles__RoleI__7F2BE32F" Association="Self.FK__UserRoles__RoleI__7F2BE32F">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRoles__UserI__7E37BEF6" Association="Self.FK__UserRoles__UserI__7E37BEF6">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TISS_WMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TISS_WMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BarcodeScans" EntityType="TISS_WMSModel.BarcodeScans" />
+          <EntitySet Name="Categories" EntityType="TISS_WMSModel.Categories" />
+          <EntitySet Name="Logs" EntityType="TISS_WMSModel.Logs" />
+          <EntitySet Name="OrderItems" EntityType="TISS_WMSModel.OrderItems" />
+          <EntitySet Name="Orders" EntityType="TISS_WMSModel.Orders" />
+          <EntitySet Name="OutboundOrders" EntityType="TISS_WMSModel.OutboundOrders" />
+          <EntitySet Name="Products" EntityType="TISS_WMSModel.Products" />
+          <EntitySet Name="ProductStock" EntityType="TISS_WMSModel.ProductStock" />
+          <EntitySet Name="Roles" EntityType="TISS_WMSModel.Roles" />
+          <EntitySet Name="StockRequests" EntityType="TISS_WMSModel.StockRequests" />
+          <EntitySet Name="Units" EntityType="TISS_WMSModel.Units" />
+          <EntitySet Name="UserRoles" EntityType="TISS_WMSModel.UserRoles" />
+          <EntitySet Name="Users" EntityType="TISS_WMSModel.Users" />
+          <EntitySet Name="Warehouses" EntityType="TISS_WMSModel.Warehouses" />
+          <AssociationSet Name="FK__BarcodeSc__Scann__68487DD7" Association="TISS_WMSModel.FK__BarcodeSc__Scann__68487DD7">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="BarcodeScans" EntitySet="BarcodeScans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Logs__UserId__6383C8BA" Association="TISS_WMSModel.FK__Logs__UserId__6383C8BA">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Logs" EntitySet="Logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Order__571DF1D5" Association="TISS_WMSModel.FK__OrderItem__Order__571DF1D5">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Produ__5812160E" Association="TISS_WMSModel.FK__OrderItem__Produ__5812160E">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__UserId__412EB0B6" Association="TISS_WMSModel.FK__Orders__UserId__412EB0B6">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OutboundO__Order__5DCAEF64" Association="TISS_WMSModel.FK__OutboundO__Order__5DCAEF64">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OutboundOrders" EntitySet="OutboundOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OutboundO__Shipp__5FB337D6" Association="TISS_WMSModel.FK__OutboundO__Shipp__5FB337D6">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="OutboundOrders" EntitySet="OutboundOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OutboundO__Wareh__5EBF139D" Association="TISS_WMSModel.FK__OutboundO__Wareh__5EBF139D">
+            <End Role="Warehouses" EntitySet="Warehouses" />
+            <End Role="OutboundOrders" EntitySet="OutboundOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductSt__Produ__52593CB8" Association="TISS_WMSModel.FK__ProductSt__Produ__52593CB8">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductStock" EntitySet="ProductStock" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockRequ__Produ__787EE5A0" Association="TISS_WMSModel.FK__StockRequ__Produ__787EE5A0">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="StockRequests" EntitySet="StockRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductSt__Wareh__534D60F1" Association="TISS_WMSModel.FK__ProductSt__Wareh__534D60F1">
+            <End Role="Warehouses" EntitySet="Warehouses" />
+            <End Role="ProductStock" EntitySet="ProductStock" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRoles__RoleI__7F2BE32F" Association="TISS_WMSModel.FK__UserRoles__RoleI__7F2BE32F">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Roles" Association="TISS_WMSModel.FK_Users_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockRequ__Appro__7B5B524B" Association="TISS_WMSModel.FK__StockRequ__Appro__7B5B524B">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StockRequests" EntitySet="StockRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockRequ__Reque__7A672E12" Association="TISS_WMSModel.FK__StockRequ__Reque__7A672E12">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StockRequests" EntitySet="StockRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StockRequ__Wareh__797309D9" Association="TISS_WMSModel.FK__StockRequ__Wareh__797309D9">
+            <End Role="Warehouses" EntitySet="Warehouses" />
+            <End Role="StockRequests" EntitySet="StockRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRoles__UserI__7E37BEF6" Association="TISS_WMSModel.FK__UserRoles__UserI__7E37BEF6">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BarcodeScans">
+          <Key>
+            <PropertyRef Name="BarcodeScanId" />
+          </Key>
+          <Property Name="BarcodeScanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Barcode" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ScanType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ScanDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ScannedByUserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="TISS_WMSModel.FK__BarcodeSc__Scann__68487DD7" FromRole="BarcodeScans" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Logs">
+          <Key>
+            <PropertyRef Name="LogId" />
+          </Key>
+          <Property Name="LogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="UserAction" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="TISS_WMSModel.FK__Logs__UserId__6383C8BA" FromRole="Logs" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="OrderItems">
+          <Key>
+            <PropertyRef Name="OrderItemId" />
+          </Key>
+          <Property Name="OrderItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Orders" Relationship="TISS_WMSModel.FK__OrderItem__Order__571DF1D5" FromRole="OrderItems" ToRole="Orders" />
+          <NavigationProperty Name="Products" Relationship="TISS_WMSModel.FK__OrderItem__Produ__5812160E" FromRole="OrderItems" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OrderStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="OrderItems" Relationship="TISS_WMSModel.FK__OrderItem__Order__571DF1D5" FromRole="Orders" ToRole="OrderItems" />
+          <NavigationProperty Name="Users" Relationship="TISS_WMSModel.FK__Orders__UserId__412EB0B6" FromRole="Orders" ToRole="Users" />
+          <NavigationProperty Name="OutboundOrders" Relationship="TISS_WMSModel.FK__OutboundO__Order__5DCAEF64" FromRole="Orders" ToRole="OutboundOrders" />
+        </EntityType>
+        <EntityType Name="OutboundOrders">
+          <Key>
+            <PropertyRef Name="OutboundOrderId" />
+          </Key>
+          <Property Name="OutboundOrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="WarehouseId" Type="Int32" Nullable="false" />
+          <Property Name="ShippedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ShippedByUserId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Orders" Relationship="TISS_WMSModel.FK__OutboundO__Order__5DCAEF64" FromRole="OutboundOrders" ToRole="Orders" />
+          <NavigationProperty Name="Users" Relationship="TISS_WMSModel.FK__OutboundO__Shipp__5FB337D6" FromRole="OutboundOrders" ToRole="Users" />
+          <NavigationProperty Name="Warehouses" Relationship="TISS_WMSModel.FK__OutboundO__Wareh__5EBF139D" FromRole="OutboundOrders" ToRole="Warehouses" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Barcode" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Unit" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="StockQuantity" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+          <Property Name="MinStockLevel" Type="Int32" />
+          <NavigationProperty Name="OrderItems" Relationship="TISS_WMSModel.FK__OrderItem__Produ__5812160E" FromRole="Products" ToRole="OrderItems" />
+          <NavigationProperty Name="ProductStock" Relationship="TISS_WMSModel.FK__ProductSt__Produ__52593CB8" FromRole="Products" ToRole="ProductStock" />
+          <NavigationProperty Name="StockRequests" Relationship="TISS_WMSModel.FK__StockRequ__Produ__787EE5A0" FromRole="Products" ToRole="StockRequests" />
+        </EntityType>
+        <EntityType Name="ProductStock">
+          <Key>
+            <PropertyRef Name="ProductStockId" />
+          </Key>
+          <Property Name="ProductStockId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="WarehouseId" Type="Int32" Nullable="false" />
+          <Property Name="StockChange" Type="Int32" Nullable="false" />
+          <Property Name="CurrentStock" Type="Int32" Nullable="false" />
+          <Property Name="TransactionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReorderLevel" Type="Int32" />
+          <NavigationProperty Name="Products" Relationship="TISS_WMSModel.FK__ProductSt__Produ__52593CB8" FromRole="ProductStock" ToRole="Products" />
+          <NavigationProperty Name="Warehouses" Relationship="TISS_WMSModel.FK__ProductSt__Wareh__534D60F1" FromRole="ProductStock" ToRole="Warehouses" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserRoles" Relationship="TISS_WMSModel.FK__UserRoles__RoleI__7F2BE32F" FromRole="Roles" ToRole="UserRoles" />
+          <NavigationProperty Name="Users" Relationship="TISS_WMSModel.FK_Users_Roles" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="StockRequests">
+          <Key>
+            <PropertyRef Name="StockRequestId" />
+          </Key>
+          <Property Name="StockRequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="WarehouseId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="RequestType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RequestedBy" Type="Int32" Nullable="false" />
+          <Property Name="ApprovedBy" Type="Int32" />
+          <Property Name="RequestDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ApprovalDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Products" Relationship="TISS_WMSModel.FK__StockRequ__Produ__787EE5A0" FromRole="StockRequests" ToRole="Products" />
+          <NavigationProperty Name="Users" Relationship="TISS_WMSModel.FK__StockRequ__Appro__7B5B524B" FromRole="StockRequests" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="TISS_WMSModel.FK__StockRequ__Reque__7A672E12" FromRole="StockRequests" ToRole="Users" />
+          <NavigationProperty Name="Warehouses" Relationship="TISS_WMSModel.FK__StockRequ__Wareh__797309D9" FromRole="StockRequests" ToRole="Warehouses" />
+        </EntityType>
+        <EntityType Name="Units">
+          <Key>
+            <PropertyRef Name="UnitID" />
+          </Key>
+          <Property Name="UnitID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="UserRoleID" />
+          </Key>
+          <Property Name="UserRoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="TISS_WMSModel.FK__UserRoles__RoleI__7F2BE32F" FromRole="UserRoles" ToRole="Roles" />
+          <NavigationProperty Name="Users" Relationship="TISS_WMSModel.FK__UserRoles__UserI__7E37BEF6" FromRole="UserRoles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserAccount" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordHash" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Role" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BarcodeScans" Relationship="TISS_WMSModel.FK__BarcodeSc__Scann__68487DD7" FromRole="Users" ToRole="BarcodeScans" />
+          <NavigationProperty Name="Logs" Relationship="TISS_WMSModel.FK__Logs__UserId__6383C8BA" FromRole="Users" ToRole="Logs" />
+          <NavigationProperty Name="Orders" Relationship="TISS_WMSModel.FK__Orders__UserId__412EB0B6" FromRole="Users" ToRole="Orders" />
+          <NavigationProperty Name="OutboundOrders" Relationship="TISS_WMSModel.FK__OutboundO__Shipp__5FB337D6" FromRole="Users" ToRole="OutboundOrders" />
+          <NavigationProperty Name="Roles" Relationship="TISS_WMSModel.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
+          <NavigationProperty Name="StockRequests" Relationship="TISS_WMSModel.FK__StockRequ__Appro__7B5B524B" FromRole="Users" ToRole="StockRequests" />
+          <NavigationProperty Name="StockRequests1" Relationship="TISS_WMSModel.FK__StockRequ__Reque__7A672E12" FromRole="Users" ToRole="StockRequests" />
+          <NavigationProperty Name="UserRoles" Relationship="TISS_WMSModel.FK__UserRoles__UserI__7E37BEF6" FromRole="Users" ToRole="UserRoles" />
+        </EntityType>
+        <EntityType Name="Warehouses">
+          <Key>
+            <PropertyRef Name="WarehouseId" />
+          </Key>
+          <Property Name="WarehouseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WarehouseName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="WarehouseLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="OutboundOrders" Relationship="TISS_WMSModel.FK__OutboundO__Wareh__5EBF139D" FromRole="Warehouses" ToRole="OutboundOrders" />
+          <NavigationProperty Name="ProductStock" Relationship="TISS_WMSModel.FK__ProductSt__Wareh__534D60F1" FromRole="Warehouses" ToRole="ProductStock" />
+          <NavigationProperty Name="StockRequests" Relationship="TISS_WMSModel.FK__StockRequ__Wareh__797309D9" FromRole="Warehouses" ToRole="StockRequests" />
+        </EntityType>
+        <Association Name="FK__BarcodeSc__Scann__68487DD7">
+          <End Type="TISS_WMSModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TISS_WMSModel.BarcodeScans" Role="BarcodeScans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="BarcodeScans">
+              <PropertyRef Name="ScannedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Logs__UserId__6383C8BA">
+          <End Type="TISS_WMSModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TISS_WMSModel.Logs" Role="Logs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Logs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Order__571DF1D5">
+          <End Type="TISS_WMSModel.Orders" Role="Orders" Multiplicity="1" />
+          <End Type="TISS_WMSModel.OrderItems" Role="OrderItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Produ__5812160E">
+          <End Type="TISS_WMSModel.Products" Role="Products" Multiplicity="1" />
+          <End Type="TISS_WMSModel.OrderItems" Role="OrderItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__UserId__412EB0B6">
+          <End Type="TISS_WMSModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TISS_WMSModel.Orders" Role="Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OutboundO__Order__5DCAEF64">
+          <End Type="TISS_WMSModel.Orders" Role="Orders" Multiplicity="1" />
+          <End Type="TISS_WMSModel.OutboundOrders" Role="OutboundOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OutboundOrders">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OutboundO__Shipp__5FB337D6">
+          <End Type="TISS_WMSModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TISS_WMSModel.OutboundOrders" Role="OutboundOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OutboundOrders">
+              <PropertyRef Name="ShippedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OutboundO__Wareh__5EBF139D">
+          <End Type="TISS_WMSModel.Warehouses" Role="Warehouses" Multiplicity="1" />
+          <End Type="TISS_WMSModel.OutboundOrders" Role="OutboundOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warehouses">
+              <PropertyRef Name="WarehouseId" />
+            </Principal>
+            <Dependent Role="OutboundOrders">
+              <PropertyRef Name="WarehouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductSt__Produ__52593CB8">
+          <End Type="TISS_WMSModel.Products" Role="Products" Multiplicity="1" />
+          <End Type="TISS_WMSModel.ProductStock" Role="ProductStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductStock">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockRequ__Produ__787EE5A0">
+          <End Type="TISS_WMSModel.Products" Role="Products" Multiplicity="1" />
+          <End Type="TISS_WMSModel.StockRequests" Role="StockRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="StockRequests">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductSt__Wareh__534D60F1">
+          <End Type="TISS_WMSModel.Warehouses" Role="Warehouses" Multiplicity="1" />
+          <End Type="TISS_WMSModel.ProductStock" Role="ProductStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warehouses">
+              <PropertyRef Name="WarehouseId" />
+            </Principal>
+            <Dependent Role="ProductStock">
+              <PropertyRef Name="WarehouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRoles__RoleI__7F2BE32F">
+          <End Type="TISS_WMSModel.Roles" Role="Roles" Multiplicity="1" />
+          <End Type="TISS_WMSModel.UserRoles" Role="UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Roles">
+          <End Type="TISS_WMSModel.Roles" Role="Roles" Multiplicity="1" />
+          <End Type="TISS_WMSModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockRequ__Appro__7B5B524B">
+          <End Type="TISS_WMSModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="TISS_WMSModel.StockRequests" Role="StockRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StockRequests">
+              <PropertyRef Name="ApprovedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockRequ__Reque__7A672E12">
+          <End Type="TISS_WMSModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TISS_WMSModel.StockRequests" Role="StockRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StockRequests">
+              <PropertyRef Name="RequestedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StockRequ__Wareh__797309D9">
+          <End Type="TISS_WMSModel.Warehouses" Role="Warehouses" Multiplicity="1" />
+          <End Type="TISS_WMSModel.StockRequests" Role="StockRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warehouses">
+              <PropertyRef Name="WarehouseId" />
+            </Principal>
+            <Dependent Role="StockRequests">
+              <PropertyRef Name="WarehouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRoles__UserI__7E37BEF6">
+          <End Type="TISS_WMSModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TISS_WMSModel.UserRoles" Role="UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TISS_WMSModelStoreContainer" CdmEntityContainer="TISS_WMSEntities">
+          <EntitySetMapping Name="BarcodeScans">
+            <EntityTypeMapping TypeName="TISS_WMSModel.BarcodeScans">
+              <MappingFragment StoreEntitySet="BarcodeScans">
+                <ScalarProperty Name="ScannedByUserId" ColumnName="ScannedByUserId" />
+                <ScalarProperty Name="ScanDate" ColumnName="ScanDate" />
+                <ScalarProperty Name="ScanType" ColumnName="ScanType" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="BarcodeScanId" ColumnName="BarcodeScanId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="TISS_WMSModel.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="TISS_WMSModel.Logs">
+              <MappingFragment StoreEntitySet="Logs">
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="UserAction" ColumnName="UserAction" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LogId" ColumnName="LogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderItems">
+            <EntityTypeMapping TypeName="TISS_WMSModel.OrderItems">
+              <MappingFragment StoreEntitySet="OrderItems">
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="TISS_WMSModel.Orders">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OutboundOrders">
+            <EntityTypeMapping TypeName="TISS_WMSModel.OutboundOrders">
+              <MappingFragment StoreEntitySet="OutboundOrders">
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ShippedByUserId" ColumnName="ShippedByUserId" />
+                <ScalarProperty Name="ShippedDate" ColumnName="ShippedDate" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="OutboundOrderId" ColumnName="OutboundOrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="TISS_WMSModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="MinStockLevel" ColumnName="MinStockLevel" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="StockQuantity" ColumnName="StockQuantity" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductStock">
+            <EntityTypeMapping TypeName="TISS_WMSModel.ProductStock">
+              <MappingFragment StoreEntitySet="ProductStock">
+                <ScalarProperty Name="ReorderLevel" ColumnName="ReorderLevel" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="CurrentStock" ColumnName="CurrentStock" />
+                <ScalarProperty Name="StockChange" ColumnName="StockChange" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductStockId" ColumnName="ProductStockId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="TISS_WMSModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockRequests">
+            <EntityTypeMapping TypeName="TISS_WMSModel.StockRequests">
+              <MappingFragment StoreEntitySet="StockRequests">
+                <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
+                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
+                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+                <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="StockRequestId" ColumnName="StockRequestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Units">
+            <EntityTypeMapping TypeName="TISS_WMSModel.Units">
+              <MappingFragment StoreEntitySet="Units">
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="TISS_WMSModel.UserRoles">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TISS_WMSModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="UserAccount" ColumnName="UserAccount" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Warehouses">
+            <EntityTypeMapping TypeName="TISS_WMSModel.Warehouses">
+              <MappingFragment StoreEntitySet="Warehouses">
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="WarehouseLocation" ColumnName="WarehouseLocation" />
+                <ScalarProperty Name="WarehouseName" ColumnName="WarehouseName" />
+                <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

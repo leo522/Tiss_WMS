@@ -1,0 +1,132 @@
+﻿@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首頁 - 庫存管理系統</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="mb-3">庫存管理系統</h2>
+        <!-- 庫存概覽 -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">庫存概覽</h5>
+                        <p>庫存總數量：@ViewBag.TotalStockQuantity</p>
+                        <p>產品總數：@ViewBag.TotalProductCount</p>
+                        <p>庫存總價值：@ViewBag.TotalStockValue</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 低庫存提醒 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">低庫存提醒</h5>
+                        <ul class="list-group">
+                            @foreach (var item in ViewBag.LowStockItems)
+                            {
+                                <li class="list-group-item">
+                                    @item.ProductName - 剩餘庫存: @item.StockQuantity
+                                    <a href="@Url.Action("ReplenishStock", "Stock", new { id = item.ProductId })" class="btn btn-sm btn-primary float-right">補貨</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 到期產品提醒 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">即將到期產品</h5>
+                        <ul class="list-group">
+                            @foreach (var item in ViewBag.ExpiringSoonItems)
+                            {
+                                <li class="list-group-item">
+                                    @item.ProductName - 到期日: @item.ExpiryDate?.ToString("yyyy-MM-dd")
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新訂單通知 -->
+        <div class="mt-4">
+            <h5>新訂單通知</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>訂單編號</th>
+                        <th>用戶</th>
+                        <th>金額</th>
+                        <th>訂單日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in ViewBag.NewOrders)
+                    {
+                        <tr>
+                            <td>@order.OrderId</td>
+                            <td>@order.UserAccount</td>
+                            <td>@order.TotalAmount.ToString("C")</td>
+                            <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 快速操作區 -->
+        <div class="mt-4">
+            <h5>快速操作</h5>
+            <a href="@Url.Action("AddStock", "Stock")" class="btn btn-success mr-2">新增庫存</a>
+            <a href="@Url.Action("StockTaking", "Stock")" class="btn btn-warning mr-2">庫存盤點</a>
+            <a href="@Url.Action("ProductList", "Products")" class="btn btn-info mr-2">產品列表</a>
+        </div>
+
+        <!-- 最近庫存變動 -->
+        <div class="mt-4">
+            <h5>最近庫存變動</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>產品名稱</th>
+                        <th>變動數量</th>
+                        <th>交易類型</th>
+                        <th>時間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var record in ViewBag.RecentStockChanges)
+                    {
+                        <tr>
+                            <td>@record.ProductName</td>
+                            <td>@record.StockChange</td>
+                            <td>@record.TransactionType</td>
+                            <td>@record.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 報表快捷下載 -->
+        <div class="mt-4">
+            <h5>報表下載</h5>
+            <a href="@Url.Action("ExportStockReport", "Stock", new { format = "csv" })" class="btn mr-2" style="background-color: orchid; color: white;">庫存報表 (CSV)</a>
+            <a href="@Url.Action("ExportInOutReport", "Stock", new { format = "excel" })" class="btn mr-2" style="background-color: lightseagreen; color: white;">進出貨報表 (Excel)</a>
+        </div>
+    </div>
+</body>
+</html>

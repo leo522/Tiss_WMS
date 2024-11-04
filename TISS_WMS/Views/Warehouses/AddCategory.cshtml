@@ -1,0 +1,23 @@
+﻿@model TISS_WMS.Models.Categories
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>新增類別</h2>
+    <form action="@Url.Action("AddCategory", "Settings")" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label for="CategoryName">類別名稱</label>
+            <input type="text" name="CategoryName" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success">保存</button>
+        <a href="@Url.Action("CategoryList", "Settings")" class="btn btn-primary">返回</a>
+    </form>
+</body>
+</html>

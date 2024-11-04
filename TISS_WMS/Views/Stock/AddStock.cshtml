@@ -1,0 +1,80 @@
+﻿@model TISS_WMS.Models.ProductStock
+@{
+    ViewBag.Title = "新增庫存";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>新增庫存</h2>
+
+    <!-- 條碼掃描區 -->
+    <div class="barcode-scan-section" style="margin-bottom: 20px;">
+        <label for="barcodeInput">請掃描條碼或 QR 碼:</label>
+        <input type="text" id="barcodeInput" class="form-control" placeholder="條碼/QR碼">
+        <button id="scanButton" type="button" class="btn btn-primary" style="margin-top: 10px;">掃描</button>
+    </div>
+
+    <form id="addStockForm" method="post" action="@Url.Action("AddStock", "Stock")">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label for="ProductId">產品</label>
+            @Html.DropDownList("ProductId", (SelectList)ViewBag.Products, "選擇產品", new { @class = "form-control", id = "ProductId" })
+        </div>
+
+        <div class="form-group">
+            <label for="WarehouseId">倉庫</label>
+            @Html.DropDownList("WarehouseId", (SelectList)ViewBag.Warehouses, "選擇倉庫", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label for="StockChange">庫存變動（正數為入庫）</label>
+            <input type="number" id="StockChange" name="StockChange" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="TransactionType">交易類型</label>
+            <input type="text" id="TransactionType" name="TransactionType" class="form-control" placeholder="如：入庫" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">保存</button>
+        <a href="@Url.Action("StockList", "Stock")" class="btn" style="background-color: hotpink; color: white;">返回</a>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $('#scanButton').click(function () {
+                var code = $('#barcodeInput').val().trim();
+
+                if (code) {
+                    $.ajax({
+                        url: '@Url.Action("GetProductByBarcodeOrQRCode", "Products")',
+                        type: 'GET',
+                        data: { code: code },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#ProductId').val(response.data.ProductId);
+                                alert("產品已選擇：" + response.data.ProductName);
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function () {
+                            alert("查詢產品資訊時發生錯誤");
+                        }
+                    });
+                } else {
+                    alert("請先輸入條碼或 QR 碼");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

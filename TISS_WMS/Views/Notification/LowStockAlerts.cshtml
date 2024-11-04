@@ -1,0 +1,45 @@
+﻿@model IEnumerable<dynamic>
+@{
+
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>低庫存提醒</h2>
+    @if (Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>產品名稱</th>
+                    <th>條碼</th>
+                    <th>倉庫</th>
+                    <th>當前庫存</th>
+                    <th>補貨限額</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Barcode</td>
+                        <td>@item.WarehouseId</td>
+                        <td>@item.CurrentStock</td>
+                        <td>@item.ReorderLevel</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>目前沒有低庫存產品。</p>
+    }
+</body>
+</html>
